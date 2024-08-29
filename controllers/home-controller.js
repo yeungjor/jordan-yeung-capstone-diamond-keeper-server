@@ -1,5 +1,6 @@
 const knex = require("../knexfile");
 
+// Fetch teams
 const getTeams = async (req, res) => {
   try {
     const teams = await knex("teams").select("*");
@@ -9,6 +10,7 @@ const getTeams = async (req, res) => {
   }
 };
 
+// Create new game
 const createGame = async (req, res) => {
   const { homeTeam, awayTeam, runsFor, runsAgainst, date } = req.body;
 
@@ -29,6 +31,8 @@ const createGame = async (req, res) => {
       { team_id: homeTeam, game_id: gameId[0] },
       { team_id: awayTeam, game_id: gameId[0] },
     ]);
+    // Console log gameId
+    console.log(gameId);
 
     res.status(201).json({ message: "Game created successfully" });
   } catch (error) {

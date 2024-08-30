@@ -1,4 +1,4 @@
-const knex = require("../knexfile");
+const knex = require("knex")(require("../knexfile"));
 
 // Fetch all players for specific team
 const getTeamPlayers = async (req, res) => {

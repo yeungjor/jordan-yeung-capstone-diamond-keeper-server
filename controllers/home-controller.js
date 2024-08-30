@@ -1,4 +1,4 @@
-const knex = require("../knexfile");
+const knex = require("knex")(require("../knexfile"));
 
 // Fetch all teams
 const getTeams = async (req, res) => {
@@ -14,25 +14,27 @@ const getTeams = async (req, res) => {
 const createGame = async (req, res) => {
   const { homeTeam, awayTeam, runsFor, runsAgainst, date } = req.body;
 
+  if (!awayTeam || !homeTeam || !date) {
+    return res.status(400).json({ message: "Missing required fields" });
+  }
+
   try {
-    const gameId = await knew("games")
-      .insert({
-        date,
-        home_team_id: homeTeam,
-        away_team_id: awayTeam,
-        runs_for: runsFor,
-        runs_against: runsAgainst,
-        created_at: knex.fn.now(),
-        updated_at: knex.fn.now(),
-      })
-      .returning("id");
+    const [gameId] = await knex("games").insert({
+      date,
+      home_team_id: homeTeam,
+      away_team_id: awayTeam,
+      runs_for: runsFor,
+      runs_against: runsAgainst,
+      created_at: knex.fn.now(),
+      updated_at: knex.fn.now(),
+    });
 
     await knex("team_games").insert([
-      { team_id: homeTeam, game_id: gameId[0] },
-      { team_id: awayTeam, game_id: gameId[0] },
+      { team_id: homeTeam, game_id: gameId },
+      { team_id: awayTeam, game_id: gameId },
     ]);
     // Console log gameId
-    console.log(gameId);
+    // console.log(gameId);
 
     res.status(201).json({ message: "Game created successfully" });
   } catch (error) {

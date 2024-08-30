@@ -1,11 +1,11 @@
-const knex = require("../knexfile");
+const knex = require("knex")(require("../knexfile"));
 
 // Fetch user by ID
 const getUserById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const user = await knew("user").where({ id }).first();
+    const user = await knex("users").where({ id }).first();
     res.json({ user });
   } catch (error) {
     res.status(500).json({ message: "Error fetching user", error });
@@ -21,8 +21,8 @@ const createUser = async (req, res) => {
     await knex("users").insert({
       name,
       email,
-      created_at: knew.fn.now(),
-      updated_at: knew.fn.now(),
+      created_at: knex.fn.now(),
+      updated_at: knex.fn.now(),
     });
 
     res.status(201)({ message: "User created successfully" });

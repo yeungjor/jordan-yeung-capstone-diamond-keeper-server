@@ -1,4 +1,4 @@
-const knex = require("../knexfile");
+const knex = require("knex")(require("../knexfile"));
 
 // Fetch team games for specific team
 const getTeamGames = async (req, res) => {
@@ -6,7 +6,7 @@ const getTeamGames = async (req, res) => {
 
   try {
     const games = await knex("games")
-      .join("team_games", "games_id", "team_games.game_id")
+      .join("team_games", "game_id", "team_games.game_id")
       .where("team_games.team_id", team_id)
       .select("games.*");
 

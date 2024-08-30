@@ -1,5 +1,6 @@
 const knex = require("../knexfile");
 
+// Fetch team games for specific team
 const getTeamGames = async (req, res) => {
   const { team_id } = req.params;
 

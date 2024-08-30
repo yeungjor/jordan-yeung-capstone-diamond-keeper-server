@@ -12,6 +12,7 @@ const getTeamPlayers = async (req, res) => {
   }
 };
 
+// Create new player
 const createPlayer = async (req, res) => {
   const { player_name, jersey_number, gender, bats, throws, team_id } =
     req.body;

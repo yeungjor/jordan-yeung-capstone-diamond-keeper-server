@@ -1,6 +1,6 @@
 const knex = require("../knexfile");
 
-// Fetch teams
+// Fetch all teams
 const getTeams = async (req, res) => {
   try {
     const teams = await knex("teams").select("*");

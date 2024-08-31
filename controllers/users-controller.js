@@ -18,16 +18,22 @@ const createUser = async (req, res) => {
   const { name, email } = req.body;
 
   try {
-    await knex("users").insert({
+    if (!name || !email) {
+      return res.status(400).json({ message: "Name and email are required" });
+    }
+    const [userId] = await knex("users").insert({
       name,
       email,
       created_at: knex.fn.now(),
       updated_at: knex.fn.now(),
     });
 
-    res.status(201)({ message: "User created successfully" });
+    res.status(201).json({ message: "User created successfully", userId });
   } catch (error) {
-    res.status(500).json({ message: "Error creating user", error });
+    console.error("Error creating user:", error);
+    res
+      .status(500)
+      .json({ message: "Error creating user", error: error.message });
   }
 };
 

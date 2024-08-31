@@ -5,14 +5,17 @@ const getTeamGames = async (req, res) => {
   const { team_id } = req.params;
 
   try {
-    const games = await knex("games")
-      .join("team_games", "game_id", "team_games.game_id")
+    const teamGames = await knex("games")
+      .join("team_games", "games.id", "team_games.game_id")
       .where("team_games.team_id", team_id)
       .select("games.*");
 
-    req.json({ games });
+    res.status(200).json({ teamGames });
   } catch (error) {
-    res.status(500).json({ message: "Error fetching team games", error });
+    console.error("Error Fetching team games:", error);
+    res
+      .status(500)
+      .json({ message: "Error fetching team games", error: error.message });
   }
 };
 

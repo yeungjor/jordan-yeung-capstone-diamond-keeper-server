@@ -1,6 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const { getTeamGames } = require("../controllers/games-controller");
+const {
+  getAllGames,
+  createGame,
+  getTeamGames,
+} = require("../controllers/games-controller");
+
+router.get("/", getAllGames);
+
+router.post("/", createGame);
 
 router.get("/:team_id", getTeamGames);
 

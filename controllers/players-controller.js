@@ -1,6 +1,16 @@
 const knex = require("knex")(require("../knexfile"));
 
-// Fetch all players for specific team
+// Get all players
+const getAllPlayers = async (req, res) => {
+  try {
+    const players = await knex("players").select("*");
+    res.json({ players });
+  } catch (error) {
+    res.status(500).json({ message: " Error fetching players", error });
+  }
+};
+
+// Fetch players for specific team
 const getTeamPlayers = async (req, res) => {
   const { team_id } = req.params;
 
@@ -32,4 +42,4 @@ const createPlayer = async (req, res) => {
   }
 };
 
-module.exports = { getTeamPlayers, createPlayer };
+module.exports = { getAllPlayers, getTeamPlayers, createPlayer };

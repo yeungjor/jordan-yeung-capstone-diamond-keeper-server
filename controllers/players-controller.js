@@ -42,4 +42,15 @@ const createPlayer = async (req, res) => {
   }
 };
 
-module.exports = { getAllPlayers, getTeamPlayers, createPlayer };
+// Delete player
+const deletePlayer = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await knex("players").where({ id }).del();
+    res.status(200).json({ message: "Player deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting player", error });
+  }
+};
+
+module.exports = { getAllPlayers, getTeamPlayers, createPlayer, deletePlayer };
